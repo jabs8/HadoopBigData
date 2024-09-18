@@ -42,17 +42,14 @@ except Exception as e:
 table = connection.table('DW_Fromagerie')
  
 # Lecture du fichier CSV et importation en lots avec encodage UTF-8
-with open('dataw_fro03.csv', mode='r', encoding='utf-8') as csvfile:  # Spécifie l'encodage utf-8 ici
-    print('1')
+with open('dataw_fro03.csv', mode='r', encoding='utf-8') as csvfile:
     reader = csv.reader(csvfile)
     row_id = 1
- 
     # Parcourir le fichier CSV ligne par ligne
     for row in reader:
         # Contraintes :
-        print('2')
-        prenomcli = replace_null_or_empty(row[3].strip())  # Champ prenomcli
-        datcde = replace_null_or_empty(row[7].strip())     # Champ datcde
+        prenomcli = replace_null_or_empty(row[3].strip())
+        datcde = replace_null_or_empty(row[7].strip())
  
         # 1. Si prenomcli est vide, on ignore la ligne
         if not prenomcli:

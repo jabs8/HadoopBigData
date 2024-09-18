@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 import sys
 from collections import defaultdict
 
-# Dictionnaire pour stocker la fidélité cumulée et les informations des clients
-# Chaque client a un dictionnaire d'objets qui est un defaultdict de dict pour stocker les quantités et points
+# Dictionnaire pour stocker la fidélité cumulée de chaque client et leurs informations associés
+# Chaque client a un dictionnaire d'objets qui est un "defaultdict" de dict pour stocker les quantités et points
 clients = defaultdict(lambda: {
     'fidélité': 0,
     'nom': '',
@@ -17,12 +17,11 @@ clients = defaultdict(lambda: {
     'objets': defaultdict(lambda: {'quantite': 0, 'points': 0})  # Note ici que 'objets' est un defaultdict
 })
 
-# Lire les lignes du mapper
 for line in sys.stdin:
-    # Supposons que le mapper envoie des informations séparées par des tabulations
-    # Format : client_id \t nom \t prénom \t ville \t département \t nom_objet \t quantité \t fidélité
+    # Le mapper renvoi des informations séparé par des tabulations
     data = line.strip().split('\t')
 
+    # On vérifie la taille des données en entrée et on attribue les informations
     if len(data) == 9:
         nom = data[0]
         prenom = data[1]
@@ -31,9 +30,10 @@ for line in sys.stdin:
         nom_objet = data[4]
         quantite = int(data[5])
         client_id = data[7]
-        fidelite = float(data[8])  # La fidélité est la somme (points * quantité)
+        fidelite = float(data[8])
 
         # Mettre à jour les informations du client dans le dictionnaire
+        # La fidélité est la somme (points * quantité)
         clients[client_id]['fidélité'] += fidelite
         clients[client_id]['nom'] = nom
         clients[client_id]['prenom'] = prenom
@@ -80,7 +80,7 @@ df = pd.DataFrame(data, columns=[
 ])
 
 # Exporter le DataFrame en fichier Excel
-output_excel_file = '/datavolume1/top_10_clients_fideles.xlsx'  # Modifier selon le chemin de sortie souhaité
+output_excel_file = '/datavolume1/top_10_clients_fideles.xlsx'
 df.to_excel(output_excel_file, index=False)
 
 print("Le fichier Excel 'top_10_clients_fideles.xlsx' a ete cree avec les details des produits pour les 10 clients les plus fideles.")
@@ -106,5 +106,6 @@ with PdfPages(output_pdf_file) as pdf:
         pdf.savefig()
         plt.close()
 
+# Message pour s'assurer que tout s'est bien passé
 print("Les graphiques de repartition des produits ont ete crees et exportes dans '{}'".format(output_pdf_file))
 
